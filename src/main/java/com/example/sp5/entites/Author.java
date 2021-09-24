@@ -24,5 +24,6 @@ public class Author {
     private Date birthdate;
 
     @OneToMany(fetch = FetchType.EAGER)
+
     private List<Book> books;
 }

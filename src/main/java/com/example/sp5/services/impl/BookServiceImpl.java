@@ -1,6 +1,5 @@
 package com.example.sp5.services.impl;
 
-import com.example.sp5.entites.Author;
 import com.example.sp5.entites.Book;
 import com.example.sp5.repositories.BookRepository;
 import com.example.sp5.services.BookService;
@@ -26,10 +25,6 @@ public class BookServiceImpl implements BookService {
         return (List<Book>) bookRepository.findAll();
     }
 
-    @Override
-    public List<Book> getAllBokksByAuthorId(Long id) {
-        return bookRepository.findAllByAuthor_Id(id);
-    }
 
     @Override
     public List<Book> getAllBookAndSort(int page, int size, String sortBy, String sortOrder) {
@@ -80,4 +75,6 @@ public class BookServiceImpl implements BookService {
         return books;
 
     }
+
+
 }

@@ -14,8 +14,10 @@ import java.util.List;
 public interface AuthorRepository  extends PagingAndSortingRepository<Author,Long> {
 
     List<Author> findAllByBirthdateBetween(Date at, Date from);
-
-
     Page<Author> findAll(Pageable pageable);
+
+
+    //SELECT author.name, COUNT(*) AS 'number of books' FROM author, book WHERE author.id = book.author_id GROUP BY author.name;
+
 
 }
