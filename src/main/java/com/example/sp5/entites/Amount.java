@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Amount {
-    private String author;
-    private int sum;
+    private Author author;
+    private Long sum;
+
 
 }

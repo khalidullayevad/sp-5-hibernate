@@ -3,18 +3,16 @@ package com.example.sp5.controllers;
 import com.example.sp5.entites.Amount;
 import com.example.sp5.entites.Author;
 import com.example.sp5.entites.Book;
+import com.example.sp5.services.AmountService;
 import com.example.sp5.services.AuthorService;
 import com.example.sp5.services.BookService;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,9 +22,12 @@ public class MainController{
 
     private final BookService bookService;
 
-    public MainController(AuthorService authorService, BookService bookService) {
+    private final AmountService amountService;
+
+    public MainController(AuthorService authorService, BookService bookService, AmountService amountService) {
         this.authorService = authorService;
         this.bookService = bookService;
+        this.amountService = amountService;
     }
 
 //    Получить список всех авторов
@@ -90,42 +91,32 @@ public class MainController{
 //    Получить список авторов + количество книг (которые он написал)
     @GetMapping(value = "/amountOfBooks")
     public List<Amount> amountOfBooks(){
-        List<Author> authors =authorService.getAllAuthors();
-        List<Amount> amounts = new ArrayList<>();
 
-        for(int i = 0; i<authors.size(); i++){
-            Amount amount = new Amount();         ;
-            amount.setSum(bookService.getAllBokksByAuthorId(authors.get(i).getId()).size());
-            amount.setAuthor(authors.get(i).getName());
-            amounts.add(amount);
+        List<Amount> amounts = amountService.getAllAmounts();
+        for(Amount a: amounts){
+            System.out.println(a.getAuthor() + " "+ a.getSum());
         }
 
         return  amounts;
     }
 
 
-//    Получить список авторов + количество книг (которые он написал) + постраничность + выбор соритировки
+ //   Получить список авторов + количество книг (которые он написал) + постраничность + выбор соритировки
 
-//    @GetMapping(value = "/authoramountsort")
-//    public ResponseEntity<?> authorAmountSort(@RequestParam String sortBy, @RequestParam  String sortOrder,@RequestParam int page){
-//        List<Author> authors =authorService.getAllAuthors();
-//        List<Amount> amounts = new ArrayList<>();
-//        for(int i = 0; i<authors.size(); i++){
-//         authors.get(i). setBooks(bookService.getAllBokksByAuthorId(authors.get(i).getId()));
-//
-//        }
-//        if("title".equals(sortBy) || "description".equals(sortBy) || "issueYear".equals(sortBy)){
-//            bookService.getAllBookAndSort(page,2,sortBy,sortOrder);
-//            return  new ResponseEntity<>(amounts,HttpStatus.OK)
-//        }
-//
-//        return  new ResponseEntity<>(amounts,HttpStatus.OK);
-//    }
+    @GetMapping(value = "/authoramountsort")
+    public ResponseEntity<?> authorAmountSort(@RequestParam String sortBy, @RequestParam  String sortOrder,@RequestParam int page){
+        List<Amount> amounts = amountService.sortAmount(sortBy,sortOrder,page);
+        return  new ResponseEntity<>(amounts,HttpStatus.OK);
+    }
 
 
 
 //    Получить список авторов + количество книг (которые он написал) + постраничность + выбор соритировки + авторы рожденные с даты, по дату
 
-
+    @GetMapping(value = "/amountsortbdate")
+    public ResponseEntity<?> authorAmountSortBdate(@RequestParam String sortBy, @RequestParam  String sortOrder,@RequestParam int page, @RequestParam Date at,@RequestParam Date from ){
+        List<Amount> amounts = amountService.sortAmountWithBdate(sortBy,sortOrder,page,at,from);
+        return  new ResponseEntity<>(amounts,HttpStatus.OK);
+    }
 
 }
