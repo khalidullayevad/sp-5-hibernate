@@ -51,20 +51,7 @@ public class AuthServiceImpl implements AuthorService {
                 .setFirstResult(page * 2)
                 .setMaxResults(page*2+2)
                 .getResultList();
-//        Pageable paging;
-//        if("asc".equals(sortOrder)) {
-//            paging = PageRequest.of(page, size, Sort.by(sortBy).ascending());
-//        }
-//        else {
-//            paging = PageRequest.of(page, 2, Sort.by(sortBy).descending());
-//        }
-//        Page<Author> pagedResult = authorRepository.findAll(paging);
-//
-//        if(pagedResult.hasContent()) {
-//            return pagedResult.getContent();
-//        } else {
-//            return null;
-//        }
+
 
     }
 

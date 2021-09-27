@@ -6,8 +6,7 @@ import com.example.sp5.entites.Book;
 import com.example.sp5.services.AmountService;
 import com.example.sp5.services.AuthorService;
 import com.example.sp5.services.BookService;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
