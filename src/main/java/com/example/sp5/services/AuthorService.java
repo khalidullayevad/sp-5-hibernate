@@ -11,7 +11,7 @@ public interface AuthorService {
 
     List<Author> getAllAuthors();
     List<Author> getAllAuthorsByBirthDate(Date from, Date to);
-    List<Author> getAllAuthorPageable(Pageable paggeble);
+    List<Author> getAllAuthorPageable(int page);
     List<Author> getAllAuthorPageableAndSort(int page, int size, String sortBy, String sortOrder);
 
 }

@@ -30,29 +30,29 @@ public class MainController{
         this.amountService = amountService;
     }
 
-//    Получить список всех авторов
+//    Получить список всех авторов //
     @GetMapping(value = "/allAuthors")
     public ResponseEntity<?> getAllAuthors(){
         List<Author> authors =authorService.getAllAuthors();
         return new ResponseEntity<>(authors, HttpStatus.OK);
     }
 
-//    Получить список всех авторов с постраничностью
+//    Получить список всех авторов с постраничностью //
     @GetMapping(value = "/allAuthorsWithPapageable")
     public ResponseEntity<?> getAllAuthorsWithPapageable(@RequestParam int page){
-        Pageable pageable= PageRequest.of(page, 2);
-        List<Author> authors =authorService.getAllAuthorPageable(pageable);
+
+        List<Author> authors =authorService.getAllAuthorPageable(page);
         return new ResponseEntity<>(authors, HttpStatus.OK);
     }
 
-//    Получить список всех авторов с выбором сортировки + с постраничностью
+//    Получить список всех авторов с выбором сортировки + с постраничностью //
     @GetMapping(value = "/sortAuthor")
     public ResponseEntity<?> getAllAuthorsWithPapageable(@RequestParam String sortBy, @RequestParam  String sortOrder, @RequestParam int page, @RequestParam int size){
         List<Author> authors = authorService.getAllAuthorPageableAndSort(page,size,sortBy,sortOrder);
         return new ResponseEntity<>(authors, HttpStatus.OK);
     }
 
-//    Получить список всех авторов рожденных с даты, по дату
+//    Получить список всех авторов рожденных с даты, по дату //
     @GetMapping(value = "/searchByBirthDate")
     public ResponseEntity<?> getAllAuthorsByBirthDate(@RequestParam Date from,@RequestParam Date to){
         List<Author> authors =authorService.getAllAuthorsByBirthDate(from,to);
