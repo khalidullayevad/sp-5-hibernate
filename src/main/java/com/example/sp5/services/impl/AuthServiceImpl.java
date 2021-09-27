@@ -50,7 +50,7 @@ public class AuthServiceImpl implements AuthorService {
 
     }
     @Override
-    public List<Author> getAllAuthorPageableAndSort(int page, int size, String sortBy, String sortOrder) {
+    public List<Author> getAllAuthorPageableAndSort(int page,  String sortBy, String sortOrder) {
         String qur ="SELECT a FROM Author  a  ORDER BY "+sortBy+" "+sortOrder;
         return entityManager.createQuery(qur)
                 .setFirstResult(page * 2)

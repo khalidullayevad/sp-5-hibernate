@@ -9,7 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import java.util.List;
 
 @Service
@@ -20,59 +22,44 @@ public class BookServiceImpl implements BookService {
         this.bookRepository = bookRepository;
     }
 
+    @PersistenceContext
+    protected EntityManager entityManager;
     @Override
     public List<Book> getAllBooks() {
-        return (List<Book>) bookRepository.findAll();
+
+        return entityManager.createQuery("SELECT a, b FROM Author  a , Book  b where  a.id = b.author.id")
+                .getResultList();
     }
 
 
     @Override
-    public List<Book> getAllBookAndSort(int page, int size, String sortBy, String sortOrder) {
-        Pageable paging;
-        if("asc".equals(sortOrder)) {
-            paging = PageRequest.of(page, size, Sort.by(sortBy).ascending());
-        }
-        else {
-            paging = PageRequest.of(page, 2, Sort.by(sortBy).descending());
-        }
-        Page<Book> pagedResult = bookRepository.findAll(paging);
-
-        if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
-        } else {
-            return null;
-        }
+    public List<Book> getAllBookAndSort(int page, String sortBy, String sortOrder) {
+        String qur ="SELECT a FROM Book  a  ORDER BY "+sortBy+" "+sortOrder;
+        return entityManager.createQuery(qur)
+                .setFirstResult(page * 2)
+                .setMaxResults(page*2+2)
+                .getResultList();
     }
 
     @Override
-    public List<Book> sortAndSearchBookByTitle(int page, int size, String sortBy, String sortOrder, String title) {
-            List<Book> books1 =  getAllBookAndSort(page, size, sortBy, sortOrder);
-            List<Book> books2 = bookRepository.findByTitleContaining(title);
-            List<Book> books =new ArrayList<>();
-            for(Book b: books1){
-                for(Book t: books2){
-                    if(b.equals(t)){
-                        books.add(b);
-                    }
-                }
-            }
-            return books;
+    public List<Book> sortAndSearchBookByTitle(int page,  String sortBy, String sortOrder, String title) {
+        String qur ="SELECT a FROM Book  a  where  a.title like" +"%"+title+"%"+" ORDER BY "+sortBy+" "+sortOrder;
+        return entityManager.createQuery(qur)
+                .setFirstResult(page * 2)
+                .setMaxResults(page*2+2)
+                .getResultList();
+
 
     }
 
     @Override
-    public List<Book> sortAndSearchBookByTitleAndYear(int page, int size, String sortBy, String sortOrder, String title, Long year) {
-        List<Book> books1 =  getAllBookAndSort(page, size, sortBy, sortOrder);
-        List<Book> books2 = bookRepository.findByTitleContainingAndIssueYear(title,year);
-        List<Book> books =new ArrayList<>();
-        for(Book b: books1){
-            for(Book t: books2){
-                if(b.equals(t)){
-                    books.add(b);
-                }
-            }
-        }
-        return books;
+    public List<Book> sortAndSearchBookByTitleAndYear(int page, String sortBy, String sortOrder, String title, Long year) {
+        String qur ="SELECT a FROM Book  a  where  a.title like" +"%"+title+"%"+" AND a.issueYear="+year +" ORDER BY "+sortBy+" "+sortOrder;
+        return entityManager.createQuery(qur)
+                .setFirstResult(page * 2)
+                .setMaxResults(page*2+2)
+                .getResultList();
+
 
     }
 

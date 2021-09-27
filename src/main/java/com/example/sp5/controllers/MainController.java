@@ -47,8 +47,8 @@ public class MainController{
 
 //    Получить список всех авторов с выбором сортировки + с постраничностью //
     @GetMapping(value = "/sortAuthor")
-    public ResponseEntity<?> getAllAuthorsWithPapageable(@RequestParam String sortBy, @RequestParam  String sortOrder, @RequestParam int page, @RequestParam int size){
-        List<Author> authors = authorService.getAllAuthorPageableAndSort(page,size,sortBy,sortOrder);
+    public ResponseEntity<?> getAllAuthorsWithPapageable(@RequestParam String sortBy, @RequestParam  String sortOrder, @RequestParam int page){
+        List<Author> authors = authorService.getAllAuthorPageableAndSort(page,sortBy,sortOrder);
         return new ResponseEntity<>(authors, HttpStatus.OK);
     }
 
@@ -59,7 +59,7 @@ public class MainController{
         return new ResponseEntity<>(authors, HttpStatus.OK);
     }
 
-//    Получить список всех книг (вывести и книгу и автора)
+//    Получить список всех книг (вывести и книгу и автора) //
     @GetMapping(value = "/allBooks")
     public ResponseEntity<?> getAllBooks(){
         List<Book> books =bookService.getAllBooks();
@@ -67,28 +67,28 @@ public class MainController{
     }
 
 
-//    Список книг (как выше) + постраничность и выбор сортировки
+//    Список книг (как выше) + постраничность и выбор сортировки//
     @GetMapping(value = "/sortBook")
-    public ResponseEntity<?> getAllAuthorBook(@RequestParam String sortBy, @RequestParam  String sortOrder, @RequestParam int page, @RequestParam int size){
-        List<Book> books = bookService.getAllBookAndSort(page,size,sortBy,sortOrder);
+    public ResponseEntity<?> getAllAuthorBook(@RequestParam String sortBy, @RequestParam  String sortOrder, @RequestParam int page ){
+        List<Book> books = bookService.getAllBookAndSort(page,sortBy,sortOrder);
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
-//    Список книг (как выше) + постраничность и выбор сортировки + поиск по названию
+//    Список книг (как выше) + постраничность и выбор сортировки + поиск по названию //
     @GetMapping(value = "/searchbytitle")
-    public ResponseEntity<?> sortBookAndSearch(@RequestParam String sortBy, @RequestParam  String sortOrder,@RequestParam String title){
-        List<Book> books = bookService.sortAndSearchBookByTitle(0,2,sortBy,sortOrder,title);
+    public ResponseEntity<?> sortBookAndSearch(@RequestParam String sortBy, @RequestParam  String sortOrder,@RequestParam String title, int page){
+        List<Book> books = bookService.sortAndSearchBookByTitle(page,sortBy,sortOrder,title);
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
-//    Список книг (как выше) + постраничность и выбор сортировки + поиск по названию + поиск по году выпуска
+//    Список книг (как выше) + постраничность и выбор сортировки + поиск по названию + поиск по году выпуска//
     @GetMapping(value = "/searchbytitleandyear")
     public ResponseEntity<?> sortBookAndSearch(@RequestParam String sortBy, @RequestParam  String sortOrder,@RequestParam String title,@RequestParam Long year){
-        List<Book> books = bookService.sortAndSearchBookByTitleAndYear(0,2,sortBy,sortOrder,title,year);
+        List<Book> books = bookService.sortAndSearchBookByTitleAndYear(0,sortBy,sortOrder,title,year);
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
-//    Получить список авторов + количество книг (которые он написал)
+//    Получить список авторов + количество книг (которые он написал)//
     @GetMapping(value = "/amountOfBooks")
     public List<Amount> amountOfBooks(){
 

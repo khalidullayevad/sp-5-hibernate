@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -19,7 +20,8 @@ import java.util.List;
 public class AmountServiceImpl implements AmountService {
     private final AmountRepository amountRepository;
 
-  //  private EntityManager entityManager;
+    @PersistenceContext
+    protected EntityManager entityManager;
 
     public AmountServiceImpl(AmountRepository amountRepository) {
         this.amountRepository = amountRepository;
@@ -27,53 +29,41 @@ public class AmountServiceImpl implements AmountService {
 
     @Override
     public List<Amount> getAllAmounts() {
-        return amountRepository.findBooksCount();
+       return entityManager.createQuery("Select new com.example.sp5.entites.Amount(a, count(a)) FROM  Author  a, Book b where a.id = b.author.id GROUP BY a.name").getResultList();
     }
 
 
     @Override
     public List<Amount> sortAmount(String sortBy, String sortOrder, int page) {
-        Pageable paging = PageRequest.of(page, 2);;
-//        String jql = "Select new com.example.sp5.entites.Amount(a, count(a)) FROM  Author  a, Book b where a.id = b.author.id GROUP BY a.name order by "+sortBy+" "+ sortOrder;
-//        Query barQuery = entityManager.createQuery(jql);
-//        List<Amount> amount = barQuery.getResultList();
-        List<Amount> amount;
+        if("count".equals(sortBy)){
+            return entityManager.createQuery("Select new com.example.sp5.entites.Amount(a, count(a)) FROM  Author  a, Book b where a.id = b.author.id GROUP BY a.name order by count(a) "+" "+sortOrder)
+                    .setFirstResult(page * 2)
+                    .setMaxResults(page*2+2)
+                    .getResultList();
 
-        if("asc".equals(sortOrder) && "count".equals(sortBy)) {
-            amount=  amountRepository.sortAndPagingAscCount(paging);
-
-        }
-        else if("desc".equals(sortOrder) && "count".equals(sortBy)){
-            amount=  amountRepository.sortAndPagingDescCount(paging);
-        }
-        else if("desc".equals(sortOrder) && "name".equals(sortBy)){
-            amount = amountRepository.sortAndPagingAscName(paging);
         }
         else {
-            amount = amountRepository.sortAndPagingDescName(paging);
+            return entityManager.createQuery("Select new com.example.sp5.entites.Amount(a, count(a)) FROM  Author  a, Book b where a.id = b.author.id GROUP BY a.name order by a."+sortBy+" "+sortOrder)
+                    .setFirstResult(page * 2)
+                    .setMaxResults(page*2+2)
+                    .getResultList();
         }
-        return amount;
     }
 
     @Override
     public List<Amount> sortAmountWithBdate(String sortBy, String sortOrder, int page, Date at, Date from) {
-        Pageable paging = PageRequest.of(page, 2);;
+        if("count".equals(sortBy)){
+            return entityManager.createQuery("Select new com.example.sp5.entites.Amount(a, count(a)) FROM  Author  a, Book b where a.birthdate BETWEEN  "+at+ " and "+ from+" AND a.id = b.author.id GROUP BY a.name ORDER by count (a)"+" "+sortOrder)
+                    .setFirstResult(page * 2)
+                    .setMaxResults(page*2+2)
+                    .getResultList();
 
-        List<Amount> amount;
-
-        if("asc".equals(sortOrder) && "count".equals(sortBy)) {
-            amount=  amountRepository.sortAndPagingAmountBetweenDdateAscCount(paging,at,from);
-
-        }
-        else if("desc".equals(sortOrder) && "count".equals(sortBy)){
-            amount=  amountRepository.sortAndPagingAmountBetweenDdateDescCount(paging,at,from);
-        }
-        else if("desc".equals(sortOrder) && "name".equals(sortBy)){
-            amount = amountRepository.sortAndPagingAmountBetweenDdateAscName(paging,at,from);
         }
         else {
-            amount = amountRepository.sortAndPagingAmountBetweenDdateDescName(paging,at,from);
+            return entityManager.createQuery("Select new com.example.sp5.entites.Amount(a, count(a)) FROM  Author  a, Book b where a.birthdate BETWEEN  "+at+ " and "+ from+" AND a.id = b.author.id GROUP BY a.name ORDER by a."+sortBy+" "+sortOrder)
+                    .setFirstResult(page * 2)
+                    .setMaxResults(page*2+2)
+                    .getResultList();
         }
-        return amount;
     }
 }
