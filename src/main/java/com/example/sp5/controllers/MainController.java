@@ -93,9 +93,7 @@ public class MainController{
     public List<Amount> amountOfBooks(){
 
         List<Amount> amounts = amountService.getAllAmounts();
-        for(Amount a: amounts){
-            System.out.println(a.getAuthor() + " "+ a.getSum());
-        }
+
 
         return  amounts;
     }

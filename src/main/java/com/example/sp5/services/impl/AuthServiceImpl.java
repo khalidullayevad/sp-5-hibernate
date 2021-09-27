@@ -1,29 +1,24 @@
 package com.example.sp5.services.impl;
 
 import com.example.sp5.entites.Author;
-import com.example.sp5.repositories.AuthorRepository;
+
 import com.example.sp5.services.AuthorService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+
 import java.sql.Date;
 import java.util.List;
 
 @Service
 public class AuthServiceImpl implements AuthorService {
-    private final AuthorRepository authorRepository;
+
 
     @PersistenceContext protected EntityManager entityManager;
 
-    public AuthServiceImpl(AuthorRepository authorRepository) {
-        this.authorRepository = authorRepository;
-    }
+
 
     @Override
     public List<Author> getAllAuthors() {

@@ -1,12 +1,9 @@
 package com.example.sp5.services.impl;
 
 import com.example.sp5.entites.Book;
-import com.example.sp5.repositories.BookRepository;
+
 import com.example.sp5.services.BookService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -16,11 +13,7 @@ import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
-    private final BookRepository bookRepository;
 
-    public BookServiceImpl(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
 
     @PersistenceContext
     protected EntityManager entityManager;
