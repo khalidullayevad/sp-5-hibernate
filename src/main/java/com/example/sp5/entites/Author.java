@@ -17,11 +17,11 @@ public class Author {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = " name")
     private String name;
 
     @Column(name =  "birthdate")
-    private Date birthdate;
+        private Date birthdate;
 
     @OneToMany(fetch = FetchType.EAGER)
 

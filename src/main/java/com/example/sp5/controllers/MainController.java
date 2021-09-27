@@ -15,6 +15,7 @@ import java.sql.Date;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class MainController{
 
     private final AuthorService authorService;
@@ -28,6 +29,8 @@ public class MainController{
         this.bookService = bookService;
         this.amountService = amountService;
     }
+
+
 
 //    Получить список всех авторов //
     @GetMapping(value = "/allAuthors")
@@ -98,7 +101,7 @@ public class MainController{
     }
 
 
- //   Получить список авторов + количество книг (которые он написал) + постраничность + выбор соритировки
+ //   Получить список авторов + количество книг (которые он написал) + постраничность + выбор соритировки//
 
     @GetMapping(value = "/authoramountsort")
     public ResponseEntity<?> authorAmountSort(@RequestParam String sortBy, @RequestParam  String sortOrder,@RequestParam int page){
@@ -108,7 +111,7 @@ public class MainController{
 
 
 
-//    Получить список авторов + количество книг (которые он написал) + постраничность + выбор соритировки + авторы рожденные с даты, по дату
+//    Получить список авторов + количество книг (которые он написал) + постраничность + выбор соритировки + авторы рожденные с даты, по дату//
 
     @GetMapping(value = "/amountsortbdate")
     public ResponseEntity<?> authorAmountSortBdate(@RequestParam String sortBy, @RequestParam  String sortOrder,@RequestParam int page, @RequestParam Date at,@RequestParam Date from ){

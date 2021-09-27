@@ -20,7 +20,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getAllBooks() {
 
-        return entityManager.createQuery("SELECT a, b FROM Author  a , Book  b where  a.id = b.author.id")
+        return entityManager.createQuery("SELECT b,a FROM Author  a , Book  b where  a.id = b.author.id")
                 .getResultList();
     }
 

@@ -21,6 +21,9 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.4'
+	// https://mvnrepository.com/artifact/javax.json/javax.json-api
+    implementation group: 'javax.json', name: 'javax.json-api', version: '1.1.4'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
