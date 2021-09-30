@@ -1,5 +1,7 @@
 package com.example.sp5.controllers;
 
+import com.example.sp5.dto.AuthorDto;
+import com.example.sp5.dto.BookDto;
 import com.example.sp5.entites.Amount;
 import com.example.sp5.entites.Author;
 import com.example.sp5.entites.Book;
@@ -35,15 +37,15 @@ public class MainController{
 //    Получить список всех авторов //
     @GetMapping(value = "/allAuthors")
     public ResponseEntity<?> getAllAuthors(){
-        List<Author> authors =authorService.getAllAuthors();
+        List<AuthorDto> authors =authorService.getAllAuthors();
         return new ResponseEntity<>(authors, HttpStatus.OK);
     }
 
 //    Получить список всех авторов с постраничностью //
     @GetMapping(value = "/allAuthorsWithPapageable")
-    public ResponseEntity<?> getAllAuthorsWithPapageable(@RequestParam int page){
+    public ResponseEntity<?> getAllAuthorsWithPapageable(@RequestParam int page, @RequestParam int size){
 
-        List<Author> authors =authorService.getAllAuthorPageable(page);
+        List<Author> authors =authorService.getAllAuthorPageable(page,size);
         return new ResponseEntity<>(authors, HttpStatus.OK);
     }
 
@@ -64,7 +66,7 @@ public class MainController{
 //    Получить список всех книг (вывести и книгу и автора) //
     @GetMapping(value = "/allBooks")
     public ResponseEntity<?> getAllBooks(){
-        List<Book> books =bookService.getAllBooks();
+        List<BookDto> books =bookService.getAllBooks();
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
@@ -93,10 +95,7 @@ public class MainController{
 //    Получить список авторов + количество книг (которые он написал)//
     @GetMapping(value = "/amountOfBooks")
     public List<Amount> amountOfBooks(){
-
         List<Amount> amounts = amountService.getAllAmounts();
-
-
         return  amounts;
     }
 
@@ -119,4 +118,43 @@ public class MainController{
         return  new ResponseEntity<>(amounts,HttpStatus.OK);
     }
 
+
+    //Add book
+    @PostMapping(value = "/addBook")
+    public ResponseEntity<?> addBook(@RequestBody Book book){
+        int t= bookService.addBook(book);
+        System.out.println(book.getAuthor().getName());
+        return  new ResponseEntity<>(t,HttpStatus.OK);
+    }
+
+
+    //get one Author
+    @GetMapping(value = "/getAuthor/{id}")
+    public ResponseEntity<?> getAuthor(@PathVariable  Long id){
+        AuthorDto author = authorService.getAuthor(id);
+        return  new ResponseEntity<>(author,HttpStatus.OK);
+    }
+
+    //get one Book
+    @GetMapping(value = "/getBook/{id}")
+    public ResponseEntity<?> getBook(@PathVariable  Long id){
+        BookDto book = bookService.getBook(id);
+        return  new ResponseEntity<>(book,HttpStatus.OK);
+    }
+
+    // update book
+    @PutMapping(value = "/updateBook/{id}")
+    public ResponseEntity<?> updateBook(@PathVariable  Long id,@RequestBody Book book){
+       int t = bookService.UpdateBook(book,id);
+        System.out.println(book.getAuthor().getName());
+        return  new ResponseEntity<>(t,HttpStatus.OK);
+    }
+
+    //delete book
+
+    @PutMapping(value = "/deleteBook/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable  Long id){
+       bookService.deleteBook(id);
+        return  new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -23,7 +23,6 @@ public class Author {
     @Column(name =  "birthdate")
         private Date birthdate;
 
-    @OneToMany(fetch = FetchType.EAGER)
-
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
     private List<Book> books;
 }
